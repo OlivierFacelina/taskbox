@@ -1,6 +1,10 @@
 <template>
   <div>
-    <pure-task-list :tasks="tasks" @archiveTask="archiveTask" @pinTask="pinTask" />
+    <pure-task-list
+      :tasks="tasks"
+      @archiveTask="archiveTask"
+      @pinTask="pinTask"
+    />
   </div>
 </template>
 
