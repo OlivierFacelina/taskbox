@@ -1,9 +1,12 @@
-import Vue from "vue";
+import { createApp } from 'vue';
 import Vuex from "vuex";
 import PureInboxScreen from "./PureInboxScreen.vue";
 import { action } from "@storybook/addon-actions";
 import { defaultTasksData } from "./PureTaskList.stories";
-Vue.use(Vuex);
+const app = createApp(PureInboxScreen);
+
+// Utilisez Vuex avec l'application créée
+app.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {

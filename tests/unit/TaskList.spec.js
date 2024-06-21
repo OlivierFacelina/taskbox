@@ -1,6 +1,6 @@
 import Vue from "vue";
 import TaskList from "../../src/components/TaskList.vue";
-import { withPinnedTasksData } from "../../src/components/TaskList.stories";
+import { withPinnedTasksData } from "../../src/components/PureTaskList.stories";
 
 it("renders pinned tasks at the start of the list", () => {
   const Constructor = Vue.extend(TaskList);
