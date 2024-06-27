@@ -9,12 +9,13 @@
       />
       <span class="checkbox-custom" @click="$emit('archiveTask', task.id)" />
     </label>
-    <div class="title">
+    <div className="title">
       <input
         type="text"
         :readonly="true"
         :value="this.task.title"
         placeholder="Input title"
+        style="text-overflow: ellipsis"
       />
     </div>
     <div class="actions">
