@@ -1,31 +1,39 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { defineStore } from "pinia";
 
-Vue.use(Vuex);
+const defaultTasks = [
+  { id: "1", title: "Something", state: "TASK_INBOX" },
+  { id: "2", title: "Something more", state: "TASK_INBOX" },
+  { id: "3", title: "Something else", state: "TASK_INBOX" },
+  { id: "4", title: "Something again", state: "TASK_INBOX" },
+];
 
-export default new Vuex.Store({
-  state: {
-    tasks: [
-      { id: "1", title: "Quelque chose", state: "TASK_INBOX" },
-      { id: "2", title: "Quelque chose de plus", state: "TASK_INBOX" },
-      { id: "3", title: "Autre chose", state: "TASK_INBOX" },
-      { id: "4", title: "Encore quelque chose", state: "TASK_INBOX" },
-    ],
-  },
-  mutations: {
-    ARCHIVE_TASK(state, id) {
-      state.tasks.find((task) => task.id === id).state = "TASK_ARCHIVED";
-    },
-    PIN_TASK(state, id) {
-      state.tasks.find((task) => task.id === id).state = "TASK_PINNED";
-    },
-  },
+export const useTaskStore = defineStore({
+  id: "taskbox",
+  state: () => ({
+    tasks: defaultTasks,
+    status: "idle",
+    error: null,
+  }),
   actions: {
-    archiveTask({ commit }, id) {
-      commit("ARCHIVE_TASK", id);
+    archiveTask(id) {
+      const task = this.tasks.find((task) => task.id === id);
+      if (task) {
+        task.state = "TASK_ARCHIVED";
+      }
     },
-    pinTask({ commit }, id) {
-      commit("PIN_TASK", id);
+    pinTask(id) {
+      const task = this.tasks.find((task) => task.id === id);
+      if (task) {
+        task.state = "TASK_PINNED";
+      }
+    },
+  },
+  getters: {
+    getFilteredTasks: (state) => {
+      const filteredTasks = state.tasks.filter(
+        (t) => t.state === "TASK_INBOX" || t.state === "TASK_PINNED"
+      );
+      return filteredTasks;
     },
   },
 });

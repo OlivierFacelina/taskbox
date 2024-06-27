@@ -1,27 +1,34 @@
 <template>
-  <div>
-    <pure-task-list
-      :tasks="tasks"
-      @archiveTask="archiveTask"
-      @pinTask="pinTask"
-    />
-  </div>
+  <PureTaskList
+    :tasks="tasks"
+    @archive-task="archiveTask"
+    @pin-task="pinTask"
+  />
 </template>
 
 <script>
 import PureTaskList from "./PureTaskList.vue";
-import { mapState, mapActions } from "vuex";
+
+import { computed } from "vue";
+
+import { useTaskStore } from "../store";
 
 export default {
-  name: "task-list",
-  components: {
-    PureTaskList,
-  },
-  methods: {
-    ...mapActions(["archiveTask", "pinTask"]),
-  },
-  computed: {
-    ...mapState(["tasks"]),
+  components: { PureTaskList },
+  name: "TaskList",
+  setup() {
+    const store = useTaskStore();
+
+    const tasks = computed(() => store.getFilteredTasks);
+
+    const archiveTask = (task) => store.archiveTask(task);
+    const pinTask = (task) => store.pinTask(task);
+
+    return {
+      tasks,
+      archiveTask,
+      pinTask,
+    };
   },
 };
 </script>

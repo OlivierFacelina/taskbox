@@ -1,80 +1,61 @@
-import { action } from "@storybook/addon-actions";
-import { withKnobs, object } from "@storybook/addon-knobs";
 import Task from "./Task.vue";
 
+import { action } from "@storybook/addon-actions";
+
 export default {
+  component: Task,
   title: "Task",
-  decorators: [withKnobs],
+  tags: ["autodocs"],
+  argTypes: {
+    onPinTask: {},
+    onArchiveTask: {},
+  },
   excludeStories: /.*Data$/,
 };
 
 export const actionsData = {
-  onPinTask: action("onPinTask"),
-  onArchiveTask: action("onArchiveTask"),
+  onPinTask: action("pin-task"),
+  onArchiveTask: action("archive-task"),
 };
-
-export const taskData = {
-  id: "1",
-  title: "Test Task",
-  state: "TASK_INBOX",
-  updated_at: new Date(2019, 0, 1, 9, 0),
-};
-
-const taskTemplate = `<task :task="task" @archiveTask="onArchiveTask" @pinTask="onPinTask" />`;
-const longTitle = `This task's name is absurdly large. In fact, I think if I keep going I might end up with content overflow. What will happen? The star that represents a pinned task could have text overlapping. The text could cut-off abruptly when it reaches the star. I hope not!`;
 
 // default task state
-export const Default = () => ({
-  components: { Task },
-  template: taskTemplate,
-  props: {
+export const Default = {
+  args: {
     task: {
-      default: object("task", { ...taskData }),
+      id: "1",
+      title: "Test Task",
+      state: "TASK_INBOX",
     },
   },
-  methods: actionsData,
-});
+};
 
 // pinned task state
-export const Pinned = () => ({
-  components: { Task },
-  template: taskTemplate,
-  props: {
+export const Pinned = {
+  args: {
     task: {
-      default: () => ({
-        ...taskData,
-        state: "TASK_PINNED",
-      }),
+      ...Default.args.task,
+      state: "TASK_PINNED",
     },
   },
-  methods: actionsData,
-});
+};
 
 // archived task state
-export const Archived = () => ({
-  components: { Task },
-  template: taskTemplate,
-  props: {
+export const Archived = {
+  args: {
     task: {
-      default: () => ({
-        ...taskData,
-        state: "TASK_ARCHIVED",
-      }),
+      ...Default.args.task,
+      state: "TASK_ARCHIVED",
     },
   },
-  methods: actionsData,
-});
+};
 
-export const LongTitle = () => ({
-  components: { Task },
-  template: taskTemplate,
-  props: {
+const longTitleString = `This task's name is absurdly large. In fact, I think if I keep going I might end up with content overflow. What will happen? The star that represents a pinned task could have text overlapping. The text could cut-off abruptly when it reaches the star. I hope not!`;
+
+export const LongTitle = {
+  args: {
     task: {
-      default: () => ({
-        ...taskData,
-        title: longTitle,
-      }),
+      ...Default.args.task,
+      title: longTitleString,
     },
   },
-  methods: actionsData,
-});
+};
